@@ -49,14 +49,14 @@ bool SL01v1::begin(void)
 	
 	uint8_t buf[2] = {TSL4531_WRITE_CMD | TSL4531_REG_CONTROL, TSL4531_CONF_START};
 	
-	uBit.i2c.write(TSL4531_I2C_ADDRESS, (BUFFER_TYPE)buf, 2);
+	uBit.i2c.write(TSL4531_I2C_ADDRESS << 1, (BUFFER_TYPE)buf, 2);
 	
 	//xCore.write8(TSL4531_I2C_ADDRESS, (TSL4531_WRITE_CMD | TSL4531_REG_CONF), TSL4531_CONF_IT_100);
 	
 	buf[0] = TSL4531_WRITE_CMD | TSL4531_REG_CONF;
 	buf[1] = TSL4531_CONF_IT_100;
 	
-	uBit.i2c.write(TSL4531_I2C_ADDRESS, (BUFFER_TYPE)buf, 2);
+	uBit.i2c.write(TSL4531_I2C_ADDRESS << 1, (BUFFER_TYPE)buf, 2);
 	
 	poll();
 	return true;
@@ -117,14 +117,14 @@ void SL01v1::GET_TSL(void)
 	
 	//raw_LUX_H = xCore.read8(TSL4531_I2C_ADDRESS, (TSL4531_WRITE_CMD | TSL4531_REG_DATA_HIGH));
 	tx_buf[0] = (TSL4531_WRITE_CMD | TSL4531_REG_DATA_HIGH);
-	uBit.i2c.write(TSL4531_I2C_ADDRESS, (BUFFER_TYPE)tx_buf, 1, true);
-	uBit.i2c.read(TSL4531_I2C_ADDRESS, (BUFFER_TYPE)rx_buf, false);
+	uBit.i2c.write(TSL4531_I2C_ADDRESS << 1, (BUFFER_TYPE)tx_buf, 1, true);
+	uBit.i2c.read(TSL4531_I2C_ADDRESS << 1, (BUFFER_TYPE)rx_buf, false);
 	raw_LUX_H = rx_buf[0];
 	
 	//raw_LUX_L = xCore.read8(TSL4531_I2C_ADDRESS, (TSL4531_WRITE_CMD | TSL4531_REG_DATA_LOW));
 	tx_buf[0] = (TSL4531_WRITE_CMD | TSL4531_REG_DATA_LOW);
-	uBit.i2c.write(TSL4531_I2C_ADDRESS, (BUFFER_TYPE)tx_buf, 1, true);
-	uBit.i2c.read(TSL4531_I2C_ADDRESS, (BUFFER_TYPE)rx_buf, false);
+	uBit.i2c.write(TSL4531_I2C_ADDRESS << 1, (BUFFER_TYPE)tx_buf, 1, true);
+	uBit.i2c.read(TSL4531_I2C_ADDRESS << 1, (BUFFER_TYPE)rx_buf, false);
 	raw_LUX_L = rx_buf[0];
 	
 	uint16_t data = ((raw_LUX_H << 8) | (raw_LUX_L));
@@ -180,7 +180,7 @@ void SL01v1::writeVEML(byte reg, byte lowbyte, byte highbyte)
 	
 	uint8_t buf[3] = {reg, lowbyte, highbyte};
 	
-	uBit.i2c.write(VEML6075_I2C_ADDRESS, (BUFFER_TYPE)buf, 3);
+	uBit.i2c.write(VEML6075_I2C_ADDRESS << 1, (BUFFER_TYPE)buf, 3);
 }
 
 /********************************************************
@@ -206,8 +206,8 @@ uint16_t SL01v1::readVEML(byte reg)
 	}*/
 	
 	tx_buf[0] = (uint8_t)reg;
-	uBit.i2c.write(VEML6075_I2C_ADDRESS, (BUFFER_TYPE)tx_buf, 1, true);
-	uBit.i2c.read(VEML6075_I2C_ADDRESS, (BUFFER_TYPE)rx_buf, 2, false);
+	uBit.i2c.write(VEML6075_I2C_ADDRESS << 1, (BUFFER_TYPE)tx_buf, 1, true);
+	uBit.i2c.read(VEML6075_I2C_ADDRESS << 1, (BUFFER_TYPE)rx_buf, 2, false);
 	
 	lowByte = rx_buf[0];
 	highByte = rx_buf[1];
@@ -261,8 +261,8 @@ uint32_t SL01v2::SI1133_registerRead(uint8_t reg, uint8_t *data)
 	
 	tx_buf[0] = reg;
 	
-	uBit.i2c.write(i2c_addr, (BUFFER_TYPE)tx_buf, 1, true);
-	uBit.i2c.read(i2c_addr, (BUFFER_TYPE)rx_buf, 1, false);
+	uBit.i2c.write(i2c_addr << 1, (BUFFER_TYPE)tx_buf, 1, true);
+	uBit.i2c.read(i2c_addr << 1, (BUFFER_TYPE)rx_buf, 1, false);
 	data[0] = rx_buf[0];
 
 	return 0;
@@ -295,7 +295,7 @@ uint32_t SL01v2::SI1133_registerWrite(uint8_t reg, uint8_t data)
 	tx_buf[0] = reg;
 	tx_buf[1] = data;
 	
-	uBit.i2c.write(i2c_addr, (BUFFER_TYPE)tx_buf, 2, true);
+	uBit.i2c.write(i2c_addr << 1, (BUFFER_TYPE)tx_buf, 2, true);
 	
 	/*Wire.beginTransmission(i2c_addr);
 	Wire.write(reg);
@@ -346,7 +346,7 @@ uint32_t SL01v2::SI1133_registerBlockWrite(uint8_t reg, uint8_t length, uint8_t 
 		buf[i] = data[i - 1];
 	}
 	
-	uBit.i2c.write(i2c_addr, (BUFFER_TYPE)buf, length + 1);
+	uBit.i2c.write(i2c_addr << 1, (BUFFER_TYPE)buf, length + 1);
 	
 	return 0;
 
@@ -382,8 +382,8 @@ uint32_t SL01v2::SI1133_registerBlockRead(uint8_t reg, uint8_t length, uint8_t *
 	uint8_t rx_buf[length] = {0};
 	
 	tx_buf[0] = reg;
-	uBit.i2c.write(i2c_addr, (BUFFER_TYPE)tx_buf, 1);
-	uBit.i2c.read(i2c_addr, (BUFFER_TYPE)rx_buf, length);
+	uBit.i2c.write(i2c_addr << 1, (BUFFER_TYPE)tx_buf, 1);
+	uBit.i2c.read(i2c_addr << 1, (BUFFER_TYPE)rx_buf, length);
 	
 	/*Wire.beginTransmission(i2c_addr);
 	Wire.write(reg);
@@ -939,11 +939,12 @@ uint8_t xSL01::checkVersion()
 	}*/
 	
 
-	if((uBit.i2c.write(0x10, (BUFFER_TYPE)buf, 1) == 0) && (uBit.i2c.write(0x29, (BUFFER_TYPE)buf, 1) == 0))
+	if((uBit.i2c.write(0x10 << 1, (BUFFER_TYPE)buf, 1) == 0) || (uBit.i2c.write(0x29 << 1, (BUFFER_TYPE)buf, 1) == 0))
 	{
 		version = 1;
 	}
-	else if ((uBit.i2c.write(0x52, (BUFFER_TYPE)buf, 1) == 0))
+	
+	else if ((uBit.i2c.write(0x52 << 1, (BUFFER_TYPE)buf, 1) == 0))
 	{
 		version = 2;
 	}
@@ -986,5 +987,47 @@ float xSL01::getUVB()
 	else
 	{
 		return 255;
+	}
+}
+
+
+namespace sl01
+{
+	xSL01 sl01 =  xSL01();
+	
+	//%
+	bool begin()
+	{
+		return sl01.begin();
+	}
+	
+	//%
+	void poll()
+	{
+		sl01.poll();
+	}
+	
+	//%
+	float getLUX()
+	{
+		return sl01.getLUX();
+	}
+	
+	//%
+	float getUVA()
+	{
+		return sl01.getUVA();
+	}
+	
+	//%
+	float getUVB()
+	{
+		return sl01.getUVB();
+	}
+	
+	//%
+	float getUVIndex()
+	{
+		return sl01.getUVIndex();
 	}
 }

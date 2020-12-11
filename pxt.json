@@ -11,10 +11,18 @@
         "README.md",
         "main.blocks",
         "main.ts",
-		"xSL01.h",
-		"xSL01.cpp",
-		"si1133_config.h"
+        "xSL01.h",
+        "xSL01.cpp",
+        "si1133_config.h",
+		"sl01_if.ts",
+		"shims.d.ts",
+		"enums.d.ts"
     ],
+	
+	"disablesVariants": [
+        "mbcodal"
+    ],
+	
     "testFiles": [
         "test.ts"
     ],
