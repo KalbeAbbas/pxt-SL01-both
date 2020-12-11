@@ -1,0 +1,26 @@
+{
+    "name": "SL01 SI113",
+    "version": "0.0.0",
+    "description": "SL01",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*",
+        "microphone": "*"
+    },
+    "files": [
+        "README.md",
+        "main.blocks",
+        "main.ts",
+		"xSL01.h",
+		"xSL01.cpp",
+		"si1133_config.h"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "public": true,
+    "supportedTargets": [
+        "microbit"
+    ],
+    "preferredEditor": "blocksprj"
+}
