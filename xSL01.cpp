@@ -49,14 +49,14 @@ bool SL01v1::begin(void)
 	
 	uint8_t buf[2] = {TSL4531_WRITE_CMD | TSL4531_REG_CONTROL, TSL4531_CONF_START};
 	
-	uBit.i2c.write(TSL4531_I2C_ADDRESS << 1, (BUFFER_TYPE)buf, 2);
+	uBit.i2c.write(TSL4531_I2C_ADDRESS << 1, (BUFFER_TYPE)buf, 2, true);
 	
 	//xCore.write8(TSL4531_I2C_ADDRESS, (TSL4531_WRITE_CMD | TSL4531_REG_CONF), TSL4531_CONF_IT_100);
 	
 	buf[0] = TSL4531_WRITE_CMD | TSL4531_REG_CONF;
 	buf[1] = TSL4531_CONF_IT_100;
 	
-	uBit.i2c.write(TSL4531_I2C_ADDRESS << 1, (BUFFER_TYPE)buf, 2);
+	uBit.i2c.write(TSL4531_I2C_ADDRESS << 1, (BUFFER_TYPE)buf, 2, false);
 	
 	poll();
 	return true;
@@ -152,6 +152,13 @@ void SL01v1::readUVdata(void)
 {
 	rawUVA = readVEML(VEML6075_REG_UVA);
 	rawUVB = readVEML(VEML6075_REG_UVB);
+	
+	rawUVA = readVEML(VEML6075_REG_UVA);
+	rawUVB = readVEML(VEML6075_REG_UVB);
+	
+	UVcomp1 = readVEML(VEML6075_REG_UVCOMP1);
+	UVcomp2 = readVEML(VEML6075_REG_UVCOMP2);
+	
 	UVcomp1 = readVEML(VEML6075_REG_UVCOMP1);
 	UVcomp2 = readVEML(VEML6075_REG_UVCOMP2);
 }
@@ -192,8 +199,8 @@ uint16_t SL01v1::readVEML(byte reg)
 	uint8_t lowByte = 0;
 	uint8_t highByte = 0;
 	
-	uint8_t tx_buf[1] = {0};
-	uint8_t rx_buf[2] = {0};
+	uint8_t tx_buf[1];
+	uint8_t rx_buf[2];
 
 	/*Wire.beginTransmission(VEML6075_I2C_ADDRESS);
 	Wire.write((uint8_t)reg);
@@ -382,8 +389,8 @@ uint32_t SL01v2::SI1133_registerBlockRead(uint8_t reg, uint8_t length, uint8_t *
 	uint8_t rx_buf[length] = {0};
 	
 	tx_buf[0] = reg;
-	uBit.i2c.write(i2c_addr << 1, (BUFFER_TYPE)tx_buf, 1);
-	uBit.i2c.read(i2c_addr << 1, (BUFFER_TYPE)rx_buf, length);
+	uBit.i2c.write(i2c_addr << 1, (BUFFER_TYPE)tx_buf, 1, true);
+	uBit.i2c.read(i2c_addr << 1, (BUFFER_TYPE)rx_buf, length, false);
 	
 	/*Wire.beginTransmission(i2c_addr);
 	Wire.write(reg);
@@ -571,10 +578,12 @@ uint32_t SL01v2::SI1133_paramSet(uint8_t address, uint8_t value)
 	uint8_t response;
 	uint8_t count;
 	retval = SI1133_waitUntilSleep();
+	
 	if (retval != SI1133_OK)
 	{
 		return retval;
 	}
+	
 	SI1133_registerRead(SI1133_REG_RESPONSE0, &response_stored);
 	response_stored &= SI1133_RSP0_COUNTER_MASK;
 	buffer[0] = value;
@@ -960,8 +969,9 @@ float xSL01::getUVA()
 	if (version == 1)
 	{
 		//SL01v1 v1;
+		v1.poll();
 		float uva = v1.getUVA();
-		;
+		
 		if (uva < 0)
 			return 0;
 		else
@@ -977,8 +987,9 @@ float xSL01::getUVB()
 	if (version == 1)
 	{
 		//SL01v1 v1;
+		v1.poll();
 		float uvb = v1.getUVB();
-		;
+		
 		if (uvb < 0)
 			return 0;
 		else
