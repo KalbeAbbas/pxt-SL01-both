@@ -209,7 +209,7 @@ private:
 #define get_y_order(m) ((m & Y_ORDER_MASK))
 #define get_sign(m) ((m & SIGN_MASK) >> 7)
 #define UV_INPUT_FRACTION 15
-#define UV_OUTPUT_FRACTION 12
+#define UV_OUTPUT_FRACTION 18
 #define UV_NUMCOEFF 2
 #define ADC_THRESHOLD 16000
 #define INPUT_FRACTION_HIGH 7

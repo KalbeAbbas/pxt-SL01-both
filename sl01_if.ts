@@ -43,14 +43,12 @@ namespace SL01
 		return getLUX()
 	}
 
-	//%block="SL01 get UVA"
 	export function getuva(): number
 	{
 		poll()
 		return getUVA()
 	}
 
-	//%block="SL01 get UVB"
 	export function getuvb(): number
 	{
 		poll()
@@ -64,14 +62,12 @@ namespace SL01
 		return getUVIndex()
 	}
 
-	//%block="SL01 get ID"
 	//%shim=sl01::getHardwareID
 	export function getHardwareID(): number
 	{
 		return 1;
 	}
 
-    //%block="SL01 check version"
 	//%shim=sl01::checkVersion
 	export function checkVersion(): number
 	{
