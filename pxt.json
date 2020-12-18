@@ -5,12 +5,10 @@
     "license": "MIT",
     "dependencies": {
         "core": "*",
-        "microphone": "*",
-        "OD01": "github:xinabox/pxt-od01#v1.0.12"
+        "microphone": "*"
     },
     "files": [
         "README.md",
-		"main.ts",
         "xSL01.h",
         "xSL01.cpp",
         "si1133_config.h",
@@ -18,8 +16,15 @@
         "shims.d.ts",
         "enums.d.ts"
     ],
-	
-	"yotta": {
+    "testFiles": [
+        "test.ts"
+    ],
+    "public": true,
+    "supportedTargets": [
+        "microbit"
+    ],
+    "preferredEditor": "tsprj",
+    "yotta": {
         "config": {
             "microbit-dal": {
                 "bluetooth": {
@@ -40,14 +45,5 @@
                 }
             }
         }
-    },
-	
-    "testFiles": [
-        "test.ts"
-    ],
-    "public": true,
-    "supportedTargets": [
-        "microbit"
-    ],
-    "preferredEditor": "blocksprj"
+    }
 }
