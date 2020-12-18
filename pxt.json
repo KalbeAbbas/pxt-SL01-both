@@ -5,17 +5,42 @@
     "license": "MIT",
     "dependencies": {
         "core": "*",
-        "microphone": "*"
+        "microphone": "*",
+        "OD01": "github:xinabox/pxt-od01#v1.0.12"
     },
     "files": [
         "README.md",
+		"main.ts",
         "xSL01.h",
         "xSL01.cpp",
         "si1133_config.h",
-		"sl01_if.ts",
-		"shims.d.ts",
-		"enums.d.ts"
+        "sl01_if.ts",
+        "shims.d.ts",
+        "enums.d.ts"
     ],
+	
+	"yotta": {
+        "config": {
+            "microbit-dal": {
+                "bluetooth": {
+                    "private_addressing": 0,
+                    "advertising_timeout": 0,
+                    "tx_power": 0,
+                    "dfu_service": 0,
+                    "event_service": 0,
+                    "device_info_service": 0,
+                    "eddystone_url": 0,
+                    "eddystone_uid": 0,
+                    "open": 0,
+                    "pairing_mode": 0,
+                    "whitelist": 1,
+                    "security_level": "SECURITY_MODE_ENCRYPTION_NO_MITM",
+                    "partial_flashing": 1,
+                    "enabled": 0
+                }
+            }
+        }
+    },
 	
     "testFiles": [
         "test.ts"
