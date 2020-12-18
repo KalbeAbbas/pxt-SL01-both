@@ -1,3 +1,4 @@
+//% color=#444444 icon="\uf0eb" block="SL01"
 namespace SL01
 {
 	//%shim=sl01::begin
